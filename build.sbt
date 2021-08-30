@@ -11,6 +11,6 @@ lazy val root = (project in file("."))
   .settings(
     name := "fp-cats",
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-core" % "2.3.0"
+      "org.typelevel" %% "cats-core" % "2.6.1"
     )
   )
