@@ -13,11 +13,13 @@ object TCVariance {
 
   // covariant type: subtyping is propagated to the generic type
   class Cage[+T]
-  val cage: Cage[Animal] = new Cage[Cat] // Cat <: Animal, so Cage[Cat] <: Cage[Animal]
+  val cage: Cage[Animal] =
+    new Cage[Cat] // Cat <: Animal, so Cage[Cat] <: Cage[Animal]
 
   // contravariant type: subtyping is propagated BACKWARDS to the generic type
   class Vet[-T]
-  val vet: Vet[Cat] = new Vet[Animal] // Cat <: Animal, then Vet[Animal] <: Vet[Cat]
+  val vet: Vet[Cat] =
+    new Vet[Animal] // Cat <: Animal, then Vet[Animal] <: Vet[Cat]
 
   // rule of thumb: "HAS a T" = covariant, "ACTS on T" = contravariant
   // variance affect how TC instances are being fetched
@@ -26,7 +28,9 @@ object TCVariance {
   trait SoundMaker[-T]
   implicit object AnimalSoundMaker extends SoundMaker[Animal]
 
-  def makeSound[T](implicit soundMaker: SoundMaker[T]): Unit = println("wow") // implementation not important
+  def makeSound[T](implicit soundMaker: SoundMaker[T]): Unit = println(
+    "wow"
+  ) // implementation not important
 
   makeSound[Animal] // ok - TC instance defined above
   makeSound[Cat] // ok - TC instance for Animal is also applicable to Cats
@@ -60,7 +64,9 @@ object TCVariance {
   Option(2) === Option.empty[Int]
 
   def main(args: Array[String]): Unit = {
-    println(organizeShow[Cat]) // ok - the compiler will inject CatsShow as implicit
+    println(
+      organizeShow[Cat]
+    ) // ok - the compiler will inject CatsShow as implicit
     // println(organizeShow[Animal]) // will not compile - ambiguous values
   }
 }
