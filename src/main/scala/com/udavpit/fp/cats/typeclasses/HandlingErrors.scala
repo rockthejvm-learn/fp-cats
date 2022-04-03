@@ -1,6 +1,6 @@
 package com.udavpit.fp.cats.typeclasses
 
-import cats.Monad
+import cats._
 
 import java.util.concurrent.Executors
 import scala.concurrent.{ExecutionContext, Future}

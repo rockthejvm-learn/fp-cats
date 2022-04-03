@@ -8,14 +8,13 @@ object FunctionalState {
 
   val countAndSay: State[Int, String] = State(currentCount => (currentCount + 1, s"Counted $currentCount"))
   val (eleven, counted10)             = countAndSay.run(10).value
+
   // state = "iterative" computations
 
   // iterative
   var a = 10
-
   a += 1
   val firstComputation = s"Added 1 to 10, obtained $a"
-
   a *= 5
   val secondComputation = s"Multiplied with 5, obtained $a"
 
@@ -32,9 +31,16 @@ object FunctionalState {
     secondResult <- secondTransformation
   } yield (firstResult, secondResult)
 
+  // function composition is clunky
+  val func1 = (s: Int) => (s + 1, s"Added 1 to 10, obtained ${s + 1}")
+  val func2 = (s: Int) => (s * 5, s"Multiplied with 5, obtained ${s * 5}")
+
+  val compositeFunc = func1.andThen { case (newState, firstResult) =>
+    (firstResult, func2(newState))
+  }
+
   // TODO 1: an online store
   case class ShoppingCart(items: List[String], total: Double)
-
   def addToCart(item: String, price: Double): State[ShoppingCart, Double] = State { cart =>
     (ShoppingCart(item :: cart.items, cart.total + price), price + cart.total)
   }
@@ -69,11 +75,9 @@ object FunctionalState {
     c <- inspect[Int, Int](_ * 2)
   } yield (a, b, c)
 
-  // ----------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------
 
   def main(args: Array[String]): Unit = {
-    println(compositeTransformation.run(10).value)
-    println(compositeTransformation2.run(10).value)
-    println(danielsCart.run(ShoppingCart(List(), 0)).value)
+    println(danielsCart.run(ShoppingCart(Nil, 0.0)).value)
   }
 }
